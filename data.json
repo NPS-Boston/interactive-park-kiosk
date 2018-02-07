@@ -1,0 +1,119 @@
+{
+"AMH":{
+	"name":"Museum of African American History &amp; The African Meeting House",
+	"subSites":[{"abbr":"AMH","name":""}],
+	"icon":"AMH.svg",
+	"backgrounds":[
+		{"url":"AMH-outside.jpg","caption":"African Meeting House"},
+		{"url":"AMH-Balcony-side-view.jpg","caption":"African Meeting House"}
+	],
+	"tagline":"The oldest surviving black church in America.",
+	"detail":"The African Meeting House was built in 1806 and is considered the oldest surviving black church in the United States. It served as the center of religious, social, educational, and political activity for Boston&apos;s free black community in the years before the Civil War. Frederick Douglass, William Lloyd Garrison, and Mariah Stewart all spoke here, and it was the recruitment center for the 54th Massachusetts Regiment during the Civil War. At the end of the 1800s, a Jewish congregation bought the building and it served as a synagogue until 1972 when it was acquired by the Museum of African American History.",
+	"visiting_time":"30",
+	"walking_time":"Less than 15 minutes via Freedom Trail and Joy St."
+	},
+"OSMH":{
+	"name":"Old South Meeting House",
+	"subSites":[{"abbr":"OSMH","name":""}],
+	"icon":"OSMH.svg",
+	"backgrounds":[
+		{"url":"OSMH.jpg","caption":"Old South Meeting House"},
+		{"url":"IMG_2372.jpg","caption":"Old South Meeting House"}
+	],
+	"tagline":"Boston Harbor a teapot tonight!&mdash;Where the Tea Party began.",
+	"detail":"The largest building in colonial Boston, Old South Meeting House is where colonists gathered to challenge British rule in the years leading to the American Revolution. Anniversary protests of the Boston Massacre and the historic meeting of over 5,000 people that led to the Boston Tea Party all took place here. Saved from destruction in 1876, today Old South Meeting House is open daily as a museum and treasured landmark and keeps its revolutionary heritage alive as an active gathering place and a haven for free speech.",
+	"visiting_time":"30",
+	"walking_time":"Less than 5 minutes via Freedom Trail."
+	},
+"OSH":{
+	"name":"Old State House",
+	"subSites":[{"abbr":"OSH","name":""}],
+	"icon":"OSH.svg",
+	"backgrounds":[
+		{"url":"20171217_090838.jpg","caption":"Old State House"},
+		{"url":"IMG_2401.jpg","caption":"Old State - The Council Chamber"}
+	],
+	"tagline":"May the fifth of March never be forgot!",
+	"detail":"As the center of Boston\u2019s civic life in the 18th century, the Old State House served as a government building where the colonists debated the future of British rule. The Bostonian Society has operated the Old State House since 1882 as a museum with exhibits and programs on Boston\u2019s history. The Old State House balcony was the site from which the Declaration of Independence was first read to Bostonians in 1776.",
+	"visiting_time":"30 to 45",
+	"walking_time":"Across the street."
+	},
+"FH":{
+	"name":"Faneuil Hall",
+	"subSites":[{"abbr":"FHGH","name":""}],
+	"icon":"FHGH.svg",
+	"backgrounds":[
+		{"url":"P1120237.jpg","caption":"Faneuil Hall - Adams Statue"},
+		{"url":"DSCF4649.jpg","caption":"Faneuil Hall"}
+	],
+	"tagline":"The Cradle of Liberty",
+	"detail":"The Cradle of Liberty. Faneuil Hall served as Boston&apos;s Town Meeting Hall from 1742 until Boston became a city in 1822. The Great Hall was the site of some of the first protests leading to the American Revolution. Throughout the 19th century it served as a central meeting place for abolitionists, suffragettes and the labor movement. 275 years old, the Hall is still an active public meeting space.",
+	"visiting_time":"15",
+	"walking_time":"Less than 5 minutes via Freedom Trail."
+	},
+"PRH":{
+	"name":"Paul Revere House",
+	"subSites":[{"abbr":"PRH","name":""}],
+	"icon":"PRH.svg",
+	"backgrounds":[
+		{"url":"IMG_2320.jpg","caption":"Paul Revere House"},
+		{"url":"IMG_2376.jpg","caption":"Revere &amp; Sons Bell - Atop Old South"}
+	],
+	"tagline":"Listen my children and you shall hear...",
+	"detail":"Constructed around 1680, the Paul Revere House is the oldest wooden structure in Downtown Boston. The Revere family called this their home from about 1770 until 1800. On April 19, 1775, Paul Revere set out on his famous &quot;Midnight Ride&quot; from here on the eve of the Revolutionary War. The Paul Revere House is one of the oldest Museum Houses in the country, opened in 1908. A new Visitor Center now features exhibits about Revere, the Family, and the history of the neighborhood.",
+	"visiting_time":"30 to 45",
+	"walking_time":"About 15 minutes via Freedom Trail."
+	},
+"ONC":{
+	"name":"Old North Church",
+	"subSites":[{"abbr":"ONC","name":""}],
+	"icon":"ONC.svg",
+	"backgrounds":[
+		{"url":"IMG_2278.jpg","caption":"Old North Church"}
+	],
+	"tagline":"One if by land, two if by sea...",
+	"detail":"Built in 1723, Christ Church&mdash;better known as Old North&mdash;is still an active Episcopal Church. During the coming of the American Revolution, its congregation proved to be one of the most divided. It was from this famous steeple on April 18, 1775 that patriots hung two lanterns signaling that British Regulars were marching to Concord. In the months that followed many loyal members, including the Rector Mather Byles, Jr., were forced to flee Boston.",
+	"visiting_time":"20",
+	"walking_time":"About 20 minutes via Freedom Trail."
+	},
+"BH":{
+	"name":"Bunker Hill Monument &amp; Museum",
+	"subSites":[{"abbr":"BH","name":"Monument"},{"abbr":"BHM","name":"Museum"}],
+	"icon":"BH.svg",
+	"backgrounds":[
+		{"url":"IMG_1924.jpg","caption":"Bunker Hill Monument"},
+		{"url":"DSC_5339.jpg","caption":"Bunker Hill - Prescott Statue"}
+	],
+	"tagline":"Don&apos;t fire &apos;till you see the whites of their eyes!",
+	"detail":"The Bunker Hill Monument commemorates the key battle which took place there on June 17, 1775. The battle took place two months after the first shots of the American Revolutionary War were fired at Lexington and Concord. Though the British forces claimed the field after the battle, their casualties numbered over 1000 killed or wounded. After learning of the destruction, patriots came to see the standoff as a victory: It proved that Colonial soldiers had the resolve and determination to fight. Later generations privately funded and built the monument from 1825 until final dedication in 1843 as a testament to those who fought in the early months of the war for American Independence.",
+	"visiting_time":"20",
+	"walking_time":"About 40 minutes via Freedom Trail.",
+	"ferry":"Long Wharf/Charlestown Navy Yard Ferry saves 1 mile walking."
+	},
+"CNY":{
+	"name":"Charlestown Navy Yard",
+	"subSites":[{"abbr":"CNYVC","name":"Visitor Center"},{"abbr":"USSCY","name":"USS <em>Cassin Young</em>"}],
+	"icon":"USSCY.svg",
+	"backgrounds":[
+		{"url":"Cassin Young Dressed front view.jpg","caption":"USS Cassin Young"}
+	],
+	"tagline":"Serving the U.S. Navy since 1800.",
+	"detail":"One of the nation\u2019s six original Navy Yards, the decommissioned Charlestown Navy Yard is home to a number of significant structures that all played a role in revolutionizing the construction and maintenance of the United States Navy. Operating from 1800 until 1974, the Navy Yard saw the transformation from sail to steam power, and the shift from the work of tradesmen to the industrial labors of men and women. Two products of the Yard's work in maintaining the Navy still call the Navy Yard home: USS <em>Constitution</em>, the oldest commissioned warship afloat in the world, and USS <em>Cassin Young</em>, a destroyer that served in the Pacific during World War II and into the 1950s.",
+	"visiting_time":"20",
+	"walking_time":"About 35 minutes via Freedom Trail.",
+	"ferry":"Long Wharf/Charlestown Navy Yard Ferry saves 1 mile walking."
+	},
+"USSC":{
+	"name":"USS Constitution &amp; USS Constitution Museum",
+	"subSites":[{"abbr":"USSC","name":"USS <em>Constitution</em>"},{"abbr":"USSCM","name":"Museum"}],
+	"icon":"USSC.svg",
+	"backgrounds":[
+		{"url":"USS Constitution 1.jpg","caption":"USS Constitution"}
+	],
+	"tagline":"Huzzah! Her sides are made of iron!",
+	"detail":"Launched in 1797 and still in service to the United States Navy, &quot;Old Ironsides&quot; is the oldest commissioned ship afloat in the world. She is undefeated in battle and gained her famed reputation during the War of 1812. Built in Boston and largely maintained here in Charlestown for most of her life, it is only fitting that she still calls Boston Harbor her home. The ship is open regularly with tours led by U.S. Navy Crewmembers. The nearby Museum features interactive exhibits and programming about the history and experiences of USS <em>Constitution</em>.",
+	"visiting_time":"60",
+	"walking_time":"About 35 minutes via Freedom Trail.",
+	"ferry":"Long Wharf/Charlestown Navy Yard Ferry saves 1 mile walking."
+	}
+}

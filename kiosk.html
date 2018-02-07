@@ -1,0 +1,553 @@
+<html><head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="jquery-3.2.1.min.js"></script>
+<style>
+html {
+	font-family:"Frutiger LT Std", Verdana, sans-serif;
+}
+body {
+	width:100%;
+	height:1920px;
+	margin:0px;
+	overflow:hidden;
+	background-color:#B0583A;
+}
+#video {
+	height:1920px;
+	width:100%;
+	z-index:100;
+	position:absolute;
+	top:0px;
+	left:0px;
+	transition: opacity 2s;
+	cursor:none;
+	background-color:black;
+}
+.fadeOut {
+	opacity:0;
+}
+.fadeIn {
+	opacity:1;
+}
+.background {
+	background-image:url("IMG_2312.jpg");
+	background-repeat:no-repeat;
+	transition: opacity 1s;
+}
+.mainBackground {
+	height:1920px;
+	width:100%;
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:-1;
+}
+.leftPanelGlass {
+	position:absolute;
+	top:0px;
+	left:0px;
+	height:1920px;
+	width:32%;
+	z-index:0;
+    filter: blur(10px);
+}
+
+
+#leftPanel {
+	position:absolute;
+	top:0px;
+	left:0px;
+	height:1920px;
+	width:32%;
+	padding:5% 1% 5% 1%;
+	background: linear-gradient(to right,#ffffffe0,#ffffff00 85%)
+}
+#leftPanelContent {
+	position:relative;
+	height:100%;
+	width:100%;
+}
+.siteItem {
+	height:7em;
+	width:90%;
+	background:#7d1d1d2e;
+	box-shadow:3px 3px 6px #7d1d1d2e;
+	padding:1%;
+	margin-bottom:2%;
+	transition: width 1s, height 1s, background 1s, top 1s;
+	overflow:hidden;
+}
+.thumb {
+	float:left;
+	vertical-align:top;
+	height:100%;
+	margin-right:2em;
+	max-height:300px;
+	max-width:300px;
+}
+.siteItem span {
+	display:inline-block;
+}
+.siteItem.active { 
+	height:50%;
+	background: #B0583AEE
+}
+
+.siteItem.active h2 {
+	font-size: 3em;
+}
+
+.sitePreview {
+	height:3em;
+	overflow:hidden;
+	transition: height .5s;
+}
+.sitePreview.active {
+	height:0px;
+}
+
+.siteDescription {
+	min-height:160px;
+}
+
+.siteFullInfo
+{
+	width:100%;
+}
+.basicInfo
+{
+	/*width:33%;*/
+	vertical-align:top;
+}
+.basicInfoItem {
+	width:50%;
+	display:inline-block;
+}
+
+ul.list {
+	display: inline-block;
+    list-style: none;
+	margin:.5em 0px .5em 0px;
+    padding-left: 1em;
+    vertical-align: middle;
+	max-width:75%;
+}
+ul.list li {
+	padding-top:.5em;
+	padding-bottom:.5em;
+	font-size:1.5em;
+}
+
+.siteEvents {
+	width:62%;
+	box-sizing:border-box;
+	padding-left: 2%;
+	margin-left: 2%;
+	border-left: 1px solid black;
+}
+
+.event_time {
+	float: right;
+	margin-top:-1.5em;
+	font-size:1.0625em;
+	font-weight:normal;
+}
+.event_location {
+	font-size:1.0625em;
+	font-weight:normal;
+}
+.event_location::before {
+	content: "Location: ";
+	font-weight:bold;
+}
+
+.event_time::before {
+	content: "Time: ";
+	font-weight:bold;
+}
+.event_description {
+	width:100%;
+}
+
+.event_data {
+display:block;
+margin-top:.75em;
+}
+.event_title {
+	margin-top:0em;
+	margin-bottom:.5em;
+	max-width:60%;
+}
+
+#infoPanel {
+	position:absolute;
+	top:50%;
+	left:32%;
+	height:960px;
+	width:68%;
+	z-index:3;
+
+}
+#infoPanelGlass {
+	position:absolute;
+	bottom:0px;
+	right:0px;
+	height:33%;
+	width:32%;
+	z-index:0;
+    filter: blur(10px);
+	background-position-y:0%;
+	background-position-x:0%;
+}
+.siteTitle {
+    position: relative;
+    top: 88%;
+    left: 66%;
+	opacity:.75;
+    z-index: 10;
+    width: 33%;
+    color: white;
+    font-family: "NPS Rawlinson OT Oldstyle", Georgia, Serif;
+    font-style: italic;
+    font-size: 4em;
+    transition: opacity 1s;
+    letter-spacing: 7px;
+    text-align: right;
+    filter: blur(1px);
+    font-weight: bolder;
+    text-shadow: 0px 0px 3px black;
+}
+h2 {
+	font-size:2em;
+	margin-top:0;
+	margin-bottom:0;
+	font-family: "NPS Rawlinson OT Oldstyle", Georgia, Serif;
+	font-style:italic;
+}
+h3 {
+	font-size:1.35em;
+	margin-top:0;
+	font-style:italic;
+}
+
+.eventNum {
+    position: relative;
+    display: inline-block;
+    top: .75em;
+    left: 2.75em;
+    height: 1em;
+    width: 1em;
+    border: 2px solid black;
+    border-radius: 1em;
+    text-align: center;
+    padding: 3px;
+    background: white;
+    letter-spacing: 1px;
+}
+.subSiteHoursLabel {
+	font-style:normal;
+	margin-right:3em;
+	display:inline-block;
+}
+
+h3.siteSubHeader {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    text-align: center;
+    margin: 0;
+	padding: 0;
+
+}
+
+
+</style>
+</head>
+<body>
+<div id="imageLoadingPen" style="display:none"></div>
+<div class='mainBackground background a fadeIn' id='mainBackground_a'><div class="siteTitle"></div></div>
+<div class='mainBackground background b fadeOut' id='mainBackground_b'><div class="siteTitle"></div></div>
+<div class='leftPanelGlass background a fadeIn' id='leftPanelGlass_a'></div>
+<div class='leftPanelGlass background b fadeOut' id='leftPanelGlass_b'></div>
+	<div id='leftPanel'><div id='leftPanelContent'></div></div>
+
+
+<div id='' class='background'></div>
+	<div id='infoPanel'></div>
+<video id='video' src='FYP_Boston_English_Online.mp4'></video>
+<script>
+var currentSite = 'AMH'
+var currentBG = 'a';
+var config = '';
+var CLIENT_ID = '';
+
+//LISTENERS
+
+//when video ends, hide player element...hidePlayer() also emits video is over to hide players on clients (subtitles element)
+document.getElementById('video').addEventListener('ended',function(e) {
+		hidePlayer();
+	});
+
+//cheater skip for developing, acts like the player hit the end of the video.
+$("#video").on("click",function(e){
+	hidePlayer();
+});
+
+
+//this emits constantly while video is playing. clients with the player open use this data to handle caption data.
+$("#video").on("timeupdate",function(e){
+	socket.emit("timestamp",e.target.currentTime)
+});
+
+//------------------------
+//HELPER FUNCTIONS FOR UI
+//------------------------
+
+function hidePlayer(){
+	socket.emit("videoEnd","");
+	document.getElementById("video").pause();
+	document.getElementById("video").className = 'fadeOut';
+}
+function showPlayer(){
+	document.getElementById("video").currentTime = 0;
+	document.getElementById("video").className = 'fadeIn';
+	document.getElementById("video").play();
+}
+
+
+//set up all socket.io listeners
+var socket = io();
+
+//Handle client id upon socket connection
+socket.on("message",function(msg){
+	CLIENT_ID = msg;
+});
+
+//handle when a client touches a site icon  
+socket.on('kioskViewSite', function(site){
+	viewSite(site);
+});
+
+//handle when a client touches a video icon
+socket.on('kioskStartVideo', function(){
+	showPlayer();
+});
+//call up data from server
+$(document).ready(function() {
+	hidePlayer();
+	$.getJSON("/data",function(data){
+		config = data
+		procData(config);
+	});
+});
+
+//JSON loading callback - handles all the data!
+function procData(config){
+	for(site in config)//iterate through all the sites in config.
+	{	
+		//first preload backgrounds into imageLoadingPen
+		for(bg in config[site].backgrounds)
+		{
+			$("#imageLoadingPen").append("<img src='" + config[site].backgrounds[bg].url + "'>")
+		}
+
+		//now build html based off config and the nested API feed data that has been properly filtered out under subSiteData and events
+		var item = ""
+		item += "<div class='siteItem' id='" + site + "'>"	//primary site abbr is ID
+			item += "<div class='siteHeader'><img class='thumb' src='icons/" + config[site].icon + "'>";//primary site icon/thumbnail
+				item += "<h2>" + config[site].name + "</h2>";//primary site name
+					item += "<h3 class='sitePreview'><img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/hours.png'>";//this element is parent to all preview data
+
+					//HOURS PREVIEW. If one subsite, just list. if not, provide sub site hour labels
+					if(config[site].subSites.length > 1)
+					{
+						item += "<ul style='display:inline-block;margin:0;list-style:none;padding-left:1em;vertical-align: middle;'>"
+						for(var i = 0; i < config[site].subSites.length; i++)
+						{
+							item += "<li class='subSiteHours'><span class='subSiteHoursLabel'>" + config[site].subSites[i].name + ":</span>" + config[site].subSites[i].data.hours + "</li>";
+						}
+						item += "</ul>"
+					}
+					else
+					{
+						item += config[site].subSites[0].data.hours
+					}
+						//EVENTS,FEES,ACCESSIBLITY PREVIEW. preview total events for all subsites. if any site is fee, preview there is a fee. if there is any accessibility issue, flag it with an alert
+						item += "<span style='float:right'>";
+							//EVENTS
+							if(config[site].events.length > 0)
+							{
+								item += "<span class='eventNum'>" + config[site].events.length + "</span><img style='vertical-align: middle;' src='event-black.png'>"
+							}
+							//FEES
+							feesReq = false;
+							for(var i = 0; i < config[site].subSites.length; i++)
+							{	
+								if(config[site].subSites[i].data.fees_required == "true")
+								{
+									feesReq = true;
+									break;
+								}
+							}
+							if(feesReq)//any fees, then use fee icon
+							{
+								item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/fee.png'>"
+							}
+							else//no fees, then no fees icon
+							{
+								item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/non-fee.png'>"
+							}
+							//ACCESSIBLITY
+							accessibilityIssues = 0;
+							for(var i = 0; i < config[site].subSites.length; i++)
+							{
+								for(var j = 0; j < config[site].subSites[i].data.accessibility.length; j++)
+								{
+									if(config[site].subSites[i].data.accessibility[j].accessible == "false")
+									{
+										accessibilityIssues++;
+									}
+								}
+							}
+							if(accessibilityIssues == 0)//if no issues, then use full accessible
+							{
+								item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/accessible.png'>"
+							}
+							else
+							{
+								if(accessibilityIssues < config[site].subSites.length)//if there is one or more, but FEWER than total sites, provide an alert !
+									item += "<img style='vertical-align: middle;' src='accessible-alert.png'>"
+								else//if all subsites have issues, then say it is not accessible.
+								item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/not-accessible.png'>"
+							}
+						item += "</span>";
+					item += "</h3>"
+			item += "</div>"
+			
+			//NOW for all the details when called up.
+			//item += "<div class='siteDescription'><h2>" + config[site].tagline + "</h2></div>"
+			item += "<div class='siteFullInfo'>"
+				//item += "<span class='basicInfo'>"
+					if(config[site].subSites.length == 1)
+					{
+						item += "<h3 style='font-size:1.75em'>" + config[site].subSites[0].data.hours + "</h3>"
+					}
+					item += "<span class='basicInfoItem'>"
+						item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/hours.png'>"
+						item += "<ul class='list'>"
+							
+							item += "<li>Most visitors spend about " + config[site].visiting_time + " minutes";
+							if(config[site].events.length > 0)
+							{
+								if(config[site].events.length == 1)
+								{
+									item += " and there is 1 event/activity today.</li>"
+								}
+								else
+								{
+									item += " and there are " + config[site].events.length + " events and activites today.</li>"
+								}
+							}
+							else
+							{
+								item += ".</li>";
+							}
+						item +="</ul>"
+					item += "</span>"
+					item += "<span class='basicInfoItem'>"
+							item += "<img style='vertical-align: middle;' src='walking-black.png'>"
+							item += "<ul class='list'>"
+								item += "<li>" + config[site].walking_time + "";
+							item +="</ul>"
+						item += "</span>"
+					for(var i = 0; i < config[site].subSites.length; i++)
+					{
+						if(config[site].subSites.length > 1)
+						{
+							item += "<h3 class='siteSubHeader'>";
+							item += config[site].subSites[i].name + ": <br>" + config[site].subSites[i].data.hours;
+							item += "</h3>"
+						}
+						item += "<span class='basicInfoItem'>";
+						//full fee description.
+							if(config[site].subSites[i].data.fees_required == "true")
+							{
+								item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/fee.png'>"
+							}
+							else
+							{
+								item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/non-fee.png'>"
+							}
+							item += "<ul class='list'>"
+								for(var fee in config[site].subSites[i].data.fees)
+								{
+									item += "<li>" + config[site].subSites[i].data.fees[fee] + "</li>"
+								}
+							item += "</ul>"
+						item += "</span>";
+						//accessibility full description
+						item += "<span class='basicInfoItem'>";
+						if(config[site].subSites[i].data.accessibility[0].accessible == "true")
+						{
+							item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/accessible.png'>"
+						}
+						else
+						{
+							item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/not-accessible.png'>"
+						}
+						item += "<ul class='list'>"
+							for(var access in config[site].subSites[i].data.accessibility)
+							{
+								item += "<li>" + config[site].subSites[i].data.accessibility[access].consideration + "</li>"
+							}
+							item += "</ul>"
+						item += "</span>";
+					}
+				//item += "</span>"
+				/*
+				item += "<span class='siteEvents'>"
+					item += "<h3 style='margin-bottom:0px;'><img style='vertical-align: middle;' src='event-black.png'> Events and Activites: </h3>"
+					for(event in config[site].events)
+					{
+						item += "<span class='event_data'>";
+						item += "<h3 class='event_title'>" + config[site].events[event].title + "</h3>"
+						//item += "<span class='event_location'>" + events[event].location + "</span>"
+						item += "<span class='event_time'>" + config[site].events[event].formattedStartTime + config[site].events[event].formattedEndTime + "</span>"
+						item += "<span class='event_description'>" + config[site].events[event].content + "</span>"
+						item += "</span>"
+					}
+				item += "</span>"
+				*/
+			item += "</div>"
+		item += "</div>"
+		
+		$("#leftPanelContent").append(item)
+	}
+}
+function viewSite(site) {
+	currentSite = site;
+	//$("#leftPanelContent").animate({top:0})
+	setBackground(site,0)
+	$(".active").removeClass('active');
+	setTimeout(function(){
+			$("#siteTitle").html(config[site].caption)
+			$("#siteTitle").addClass('titleIn');
+			$("#leftPanelContent").animate({top:-$("#" + site)[0].offsetTop})
+			$("#" + site).addClass('active');
+			$("#" + site + " .sitePreview").addClass('active');
+		},1000);
+			
+	//},250);
+	
+}
+
+function setBackground(site,iter) {
+	$(".background." + currentBG).removeClass('fadeIn').addClass('fadeOut');
+	if(currentBG === 'a') currentBG = 'b';
+	else currentBG = 'a';
+	$('.background.' + currentBG).css("background-image","url('" + config[site].backgrounds[iter].url + "')");
+	$('#mainBackground_' + currentBG + ' .siteTitle').html(config[site].backgrounds[iter].caption);
+	$(".background." + currentBG).removeClass('fadeOut').addClass('fadeIn');
+}
+</script>
+</body>
+</body>

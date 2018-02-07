@@ -1,0 +1,24 @@
+{
+  "name": "big_board",
+  "version": "1.0.0",
+  "description": "\"Mostly this is handling Socket.io requests on client iPad(s) and then relaying those requests to the \"Big Board\" kiosk\"",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nps-boston/big_board.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nps-boston/big_board/issues"
+  },
+  "homepage": "https://github.com/nps-boston/big_board#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "get-json": "^1.0.0",
+    "socket.io": "^2.0.4"
+  }
+}

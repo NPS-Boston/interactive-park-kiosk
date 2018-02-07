@@ -1,0 +1,584 @@
+<html><head>
+<meta name=viewport content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" sizes="76x76" href="icons/76.png">
+<link rel="apple-touch-icon" sizes="120x120" href="icons/120.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icons/152.png">
+<link rel="apple-touch-icon" sizes="167x167" href="icons/167.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/180.png">
+<link rel="manifest" href="manifest.json">
+<link rel="preload" href="FYP_Boston_English_Online_Subtitles.mp4" as="video">
+<script src="/socket.io/socket.io.js"></script>
+<script src="jquery-3.2.1.min.js"></script>
+<style>
+html {
+	font-family:"Frutiger LT Std", Verdana, sans-serif;
+}
+body {
+	width:1024px;
+	height:768px;
+	margin:auto;
+	overflow-y:scroll;
+	background:url('IMG_2312.jpg');
+}
+#video {
+	height:480px;
+	width:960px;
+	position:fixed;
+	top:144px;
+	left:32px;
+	transition: opacity 2s;
+	cursor:none;
+	background-color:black;
+}
+#video::after {
+	content:"X";
+	position:relative;
+	top:-480px;
+	z-index:101;
+}
+.fadeOut {
+	opacity:0;
+	z-index:-10;
+}
+.fadeIn {
+	opacity:1;
+	z-index:1000;
+}
+.thumb {
+	display:block;
+	vertical-align:top;
+	height:100%;
+	max-height:200px;
+	max-width:200px;
+	margin:auto;
+}
+.siteItem {
+	height:300px;
+	width:300px;
+	display:inline-block;
+	background-color:#ffffff88;
+	box-shadow:3px 3px 6px #7d1d1d2e;
+	padding:10px;
+	margin:10px;
+	margin-bottom:2%;
+	transition: width 1s, height 1s, background 1s, top 1s;
+	overflow:hidden;
+	box-sizing:content-box;
+	position:absolute;
+}
+.siteItemGlass {
+	background-size:cover !important;
+	background-position:right !important;
+}
+.siteItemData {
+	background-color:#ffffff88;
+	box-shadow:0px 0px 2px 4px #7d1d1d;
+}
+h3 {
+	text-align:center;
+}
+h2 {
+	text-align:center;
+	font-family: "NPS Rawlinson OT Oldstyle", Georgia, Serif;
+}
+.AMH h2 {
+	font-size:1.25em !important;
+}
+#AMH .fullInfoHeader h2 {
+	font-size:1.25em !important;
+}
+.eventNum {
+    position: relative;
+    display: inline-block;
+    top: .75em;
+    left: 2.75em;
+    height: 1em;
+    width: 1em;
+    border: 2px solid black;
+    border-radius: 1em;
+    text-align: center;
+    padding: 3px;
+    background: white;
+    letter-spacing: 1px;
+	font-size:1.17em;
+	font-weight:bold;
+}
+.siteListing {
+position:absolute;
+top:320px;
+left:0px;
+height:100%;
+width:100%;
+}
+#siteListingGlass {
+	z-index:1;
+	filter:blur(3px);
+}
+#siteListingData {
+	z-index:2;
+}
+.siteHeader span {
+	display:inline-block;
+}
+
+.siteFullInfo {
+	z-index:100;
+	position:fixed;
+	top:0px;
+	left:-1024px;
+	height:768px;
+	width:1024px;
+	overflow:scroll;
+	transition:left 1s;
+	background-color:#ffffffcc;
+}
+
+.siteFullInfo.active {
+	left:0px;
+}
+
+.fullInfoHeader {
+	height:200px;
+	margin:20px 20px 0px 20px;
+}
+
+.fullInfoHeader img.thumb {
+	display:inline;
+	float:left;
+}
+
+.fullInfoHeader h2::after {
+    content: "\21D0 \00a0 \00a0 Back";
+    float: right;
+    font-family: sans-serif;
+    background: black;
+    color: white;
+    padding: 3px;
+    font-size: .75em;
+    border-radius: 10px;
+    font-weight: bold;
+    box-shadow: 0px 0px 8px 4px black;
+}
+
+.basicInfo {
+	width:300px;
+	float:left;
+	margin-left:20px;
+}
+
+.basicInfo span {
+	display:inline-block;
+}
+
+.background {
+	filter:blur(3px);
+	background-size:cover !important;
+	background-position:right !important;
+}
+
+ul.list {
+	display: inline-block;
+    list-style: none;
+	margin:.5em 0px .5em 0px;
+    padding-left: 1em;
+    vertical-align: middle;
+	max-width:75%;
+}
+ul.list li {
+	padding-top:.5em;
+	padding-bottom:.5em;
+}
+
+.siteEvents {
+	width:650px;
+	box-sizing:border-box;
+	padding-left: 2%;
+	margin-left: 2%;
+	border-left: 1px solid black;
+	float:right;
+	margin-right:20px;
+}
+
+.event_time {
+	float: right;
+	margin-top:-1.5em;
+	font-size:1.0625em;
+	font-weight:normal;
+}
+.event_location {
+	font-size:1.0625em;
+	font-weight:normal;
+}
+.event_location::before {
+	content: "Location: ";
+	font-weight:bold;
+}
+
+.event_time::before {
+	content: "Time: ";
+	font-weight:bold;
+}
+.event_description {
+	width:100%;
+}
+
+.event_data {
+display:block;
+margin-top:.75em;
+}
+.event_title {
+	margin-top:0em;
+	margin-bottom:.5em;
+	max-width:60%;
+}
+.highlightedText {
+	display:block !important;
+}
+.captions {
+    position: fixed;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    background: #000000cc;
+    text-align: center;
+    color: white;
+    font-size: 3em;
+	transition: opacity .5s;
+}
+
+.captions p {
+display:none;
+margin-top:300px;
+}
+</style>
+</head>
+<body>
+<div id="imageLoadingPen" style="display:none"></div>
+<div class='background siteFullInfo a' id='mainBackground_a'><div class="siteTitle"></div></div>
+<div class='background siteFullInfo b' id='mainBackground_b'><div class="siteTitle"></div></div>
+<div id="playVideo" style="width:1000px;height:300px;margin:10px;box-shadow:0px 0px 2px 4px #7d1d1d;"><img style="width:1000px;" src='FYP-Video-teaser.jpg'></div>
+<div class="siteListing" id='siteListingGlass'></div>
+<div class="siteListing" id='siteListingData'></div>
+<div class="captions fadeOut" id="english">
+   <p data-begin="00.500" data-end="02.600" region="r0" style="default">
+    Welcome to Boston!
+   </p>
+   <p data-begin="02.600" data-end="05.033" region="r1" style="default">
+    Where exploration is encouraged.
+   </p>
+   <p data-begin="05.033" data-end="06.466" region="r1" style="default">
+    A place where learning happens
+   </p>
+   <p data-begin="06.466" data-end="08.633" region="r1" style="default">
+    through experience and art.
+   </p>
+   <p data-begin="08.633" data-end="10.066" region="r0" style="default">
+    A place where freedom
+   </p>
+   <p data-begin="10.066" data-end="11.366" region="r2" style="default">
+    is remembered.
+   </p>
+   <p data-begin="11.366" data-end="12.700" region="r1" style="default">
+    Where you walk your way through
+   </p>
+   <p data-begin="12.700" data-end="14.700" region="r1" style="default">
+    history, and keep it relevant
+   </p>
+   <p data-begin="14.700" data-end="16.700" region="r1" style="default">
+    for the twenty-first century.
+   </p>
+   <p data-begin="16.700" data-end="18.933" region="r1" style="default">
+    This is a place we all share.
+   </p>
+   <p data-begin="18.933" data-end="20.766" region="r1" style="default">
+    In Boston, National Parks
+   </p>
+   <p data-begin="20.766" data-end="22.033" region="r2" style="default">
+    are everywhere.
+   </p>
+   <p data-begin="22.033" data-end="23.466" region="r1" style="default">
+    Here we learn about the past
+   </p>
+   <p data-begin="23.466" data-end="25.433" region="r1" style="default">
+    to create our future, together.
+   </p>
+   <p data-begin="25.433" data-end="27.533" region="r1" style="default">
+    Where leaders stand up to speak.
+   </p>
+   <p data-begin="27.533" data-end="29.066" region="r0" style="default">
+    Revolutions are formed.
+   </p>
+   <p data-begin="29.066" data-end="30.533" region="r0" style="default">
+    Knowledge is shared.
+   </p>
+   <p data-begin="30.533" data-end="31.900" region="r0" style="default">
+    And ships set sail.
+   </p>
+   <p data-begin="31.900" data-end="34.933" region="r1" style="default">
+    This is a place that unites us!
+   </p>
+   <p data-begin="37.866" data-end="39.933" region="r1" style="default">
+    National Parks are for everyone.
+   </p>
+   <p data-begin="39.933" data-end="41.766" region="r1" style="default">
+    So get up, get out there,
+   </p>
+   <p data-begin="41.766" data-end="43.933" region="r0" style="default">
+    and find your park!
+   </p>
+</div>
+<script>
+//set up socket.io and globals
+var socket = io();
+var currentSite = 'AMH'
+var currentBG = 'a';
+var config = '';
+var COLUMNS = 3;
+var TILE_OFFSET = 340;
+var CLIENT_ID = '';
+//touch globals
+var touch_x = null;
+var touch_y = null;
+
+
+//SOCKET.IO LISTENERS
+socket.on('kioskStartVideo', function(id){
+	if(id == CLIENT_ID)
+		showPlayer();
+});
+socket.on('videoEnd', function(id){
+hidePlayer();
+});
+
+socket.on("message",function(msg){
+	CLIENT_ID = msg;
+	console.log(CLIENT_ID);
+});
+socket.on("timestamp",function(seconds){
+	$(".captions p").each(function(index, element){
+		var start = $(element).data("begin");
+		var end = $(element).data("end");
+		//console.log(start +" "+ seconds +" "+ end)
+		if((seconds >start) && (seconds < end))
+		{
+			$(element).addClass("highlightedText");
+		}
+		else
+		{
+			$(element).removeClass("highlightedText")
+		}
+	});
+});
+
+//EVENT LISTENERS
+
+$(".captions").on("click",function(e){
+	hidePlayer();
+});
+
+$(document).ready(function() {
+	$.getJSON("/data",function(data){
+		config = data
+		procData(config);
+	});
+	$("#playVideo").on("click",function () {
+		socket.emit("startVideo",CLIENT_ID);
+	});
+});
+
+//MAIN FUNCTIONALITY
+function hidePlayer(){
+	document.getElementById("english").className = 'captions fadeOut';
+}
+function showPlayer(){
+
+	document.getElementById("english").className = 'captions fadeIn';
+}
+
+function procData(config)
+{
+	var x = 0;
+	for(site in config)//iterate through all the sites in config.
+	{	
+		//first preload backgrounds into imageLoadingPen
+		for(bg in config[site].backgrounds)
+		{
+			$("#imageLoadingPen").append("<img src='" + config[site].backgrounds[bg].url + "'>")
+		}
+		var left = TILE_OFFSET * (x%COLUMNS);
+		var top = TILE_OFFSET * Math.floor(x/COLUMNS);
+		$("#siteListingGlass").append("<div class='siteItem siteItemGlass' style='background:url(&quot;" + config[site].backgrounds[0].url + "&quot;);top:" + top + "px;left:" + left + "px;' class='" + site + "'>")
+		var item = ""
+		item += "<div class='siteItem siteItemData " + site + "' onclick='socket.emit(&quot;viewSite&quot;,&quot;" + site + "&quot;);viewSite(&quot;" + site + "&quot;)' style=top:" + top + "px;left:" + left + "px;'>"	//primary site abbr is ID
+			item += "<div class='siteHeader'>";
+				item += "<img class='thumb' src='icons/" + config[site].icon + "'>";//primary site icon/thumbnail
+				item += "<h2>" + config[site].name + "</h2>";//primary site name
+			item += "</div>"
+		item += "</div>"
+		$("#siteListingData").append(item)
+		
+		
+		//now build site detail panes
+		item = '';
+			item += "<div class='siteFullInfo' id='" + site + "'>"
+				item += "<div class='fullInfoHeader'>";
+					item += "<img class='thumb' src='icons/" + config[site].icon + "'>";//primary site icon/thumbnail
+					item += "<h2 onclick='$(&quot;.active&quot;).removeClass(&quot;active&quot;);'>" + config[site].name + "</h2>";//primary site name
+					item += config[site].detail;
+				item += "</div>";
+				item += "<div class='basicInfo'>"
+					if(config[site].subSites.length == 1)
+					{
+						item += "<h3 class='siteSubHeader'>" + config[site].subSites[0].data.hours + "</h3>"
+					}
+					item += "<span class='basicInfoItem'>"
+						item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/hours.png'>"
+						item += "<ul class='list'>"
+							
+							item += "<li>Most visitors spend about " + config[site].visiting_time + " minutes";
+							if(config[site].events.length > 0)
+							{
+								if(config[site].events.length == 1)
+								{
+									item += " and there is 1 event/activity today.</li>"
+								}
+								else
+								{
+									item += " and there are " + config[site].events.length + " events and activites today.</li>"
+								}
+							}
+							else
+							{
+								item += ".</li>";
+							}
+						item +="</ul>"
+					item += "</span>"
+					item += "<span class='basicInfoItem'>"
+							item += "<img style='vertical-align: middle;' src='walking-black.png'>"
+							item += "<ul class='list'>"
+								item += "<li>" + config[site].walking_time + "";
+							item +="</ul>"
+						item += "</span>"
+					for(var i = 0; i < config[site].subSites.length; i++)
+					{
+						if(config[site].subSites.length > 1)
+						{
+							item += "<h3 class='siteSubHeader'>";
+							item += config[site].subSites[i].name + ": <br>" + config[site].subSites[i].data.hours;
+							item += "</h3>"
+						}
+						item += "<span class='basicInfoItem'>";
+						//full fee description.
+							if(config[site].subSites[i].data.fees_required == "true")
+							{
+								item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/fee.png'>"
+							}
+							else
+							{
+								item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/non-fee.png'>"
+							}
+							item += "<ul class='list'>"
+								for(var fee in config[site].subSites[i].data.fees)
+								{
+									item += "<li>" + config[site].subSites[i].data.fees[fee] + "</li>"
+								}
+							item += "</ul>"
+						item += "</span>";
+						//accessibility full description
+						item += "<span class='basicInfoItem'>";
+						if(config[site].subSites[i].data.accessibility[0].accessible == "true")
+						{
+							item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/accessible.png'>"
+						}
+						else
+						{
+							item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/not-accessible.png'>"
+						}
+						item += "<ul class='list'>"
+							for(var access in config[site].subSites[i].data.accessibility)
+							{
+								item += "<li>" + config[site].subSites[i].data.accessibility[access].consideration + "</li>"
+							}
+							item += "</ul>"
+						item += "</span>";
+					}
+				item += "</div>"
+				item += "<div class='siteEvents'>"
+					item += "<h3 style='margin-bottom:0px;'><img style='vertical-align: middle;' src='event-black.png'> Events and Activites: </h3>"
+					for(event in config[site].events)
+					{
+						item += "<span class='event_data'>";
+						item += "<h3 class='event_title'>" + config[site].events[event].title + "</h3>"
+						//item += "<span class='event_location'>" + events[event].location + "</span>"
+						item += "<span class='event_time'>" + config[site].events[event].formattedStartTime + config[site].events[event].formattedEndTime + "</span>"
+						item += "<span class='event_description'>" + config[site].events[event].content + "</span>"
+						item += "</span>"
+					}
+				item += "</div>"
+			item += "</div>"
+		item += "</div>"
+		$("body").append(item)
+		x++;
+	}
+	
+	//add touch listeners to each "full info" card THX to user "givanse" on stackoverflow.com for the basic simple code.
+	$(".siteFullInfo").on("touchstart",function(e){
+		touch_x = e.touches[0].clientX;
+		touch_y = e.touches[0].clientY;
+	});
+	$(".siteFullInfo").on("touchmove",function(e){
+		if (!touch_x || ! touch_y)
+		{
+			return;
+		}
+		var xUp = e.touches[0].clientX;                                    
+		var yUp = e.touches[0].clientY;
+		
+		var xDiff = touch_x - xUp;
+		var yDiff = touch_y - yUp;
+	
+		if ( Math.abs( xDiff ) > Math.abs( yDiff ) )
+		{
+			if( xDiff > 0 )
+			{
+			  $(".active").removeClass('active');
+			}
+			else
+			{
+				/* right swipe */
+			}                       
+		}
+		else
+		{
+			if ( yDiff > 0 ) {
+				/* up swipe */ 
+			} else { 
+				/* down swipe */
+			}                                                                 
+		}
+		/* reset values */
+		touch_x = null;
+		touch_y = null; 
+	});
+}
+
+function viewSite(site){
+	if(currentBG === 'a') currentBG = 'b';
+	else currentBG = 'a';
+	$('.background.' + currentBG).css("background-image","url('" + config[site].backgrounds[0].url + "')");
+	$(".active").removeClass('active');
+	//setTimeout(function(){
+			//$("#siteTitle").html(config[site].caption)
+			//$("#siteTitle").addClass('titleIn');
+			//$("#leftPanelContent").animate({top:-$("#" + site)[0].offsetTop})
+			$("#" + site).addClass('active');
+			$('#mainBackground_' + currentBG).addClass('active');
+			//$("#" + site + " .sitePreview").addClass('active');
+	//	},1000);
+
+}
+</script>
+</body>
+</html>
