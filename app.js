@@ -23,9 +23,14 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var getJSON = require("get-json");
 var fs = require("fs");
+var deepEqual = require("deep-equal");
 
+//global object to store most recent api/config data for comparing with new fetches
+var DATA = '';
 
-//Return client.html for client iPads and what not.
+var daydreamtimeout = 120 //seconds for a random background change to initiate if the background hasn't been changed by user input.
+var backgroundDaydream = daydreamtimeout;
+//Root endpoint returns client.html for client iPads and what not.
 app.get('/', function(req, res){
 	res.sendFile(__dirname + '/client.html');
 });
@@ -37,18 +42,68 @@ app.get('/kiosk', function(req, res){
 });
 
 
-//serve static assets out of assets folder...the clients/kiosks see these as on the ROOT.
+//serve static assets out of assets folder...the clients/kiosk(s) see these as on the ROOT.
 app.use(express.static('assets'));
 
 
-//Dynamically figure what data goes where using Today at the Park Data API and configuration JSON.
+//Called by clients and kiosks upon initial page load to get started.
 app.get('/data', function(req, res){
-	var data = ''
+	/*getData(function(err,data){
+		if(err)
+		{
+			res.send(err);
+		}
+		else
+		{
+			res.send(data);
+			checkData();
+		}
+	});
+	*/
+	res.send(DATA);
+	
+});
+
+//every 5 minutes check all data (config and data API) and evaluate for changes. If changes, tell clients and kiosks so they can rewrite the pertinent data.
+setInterval(function(){
+	checkData();
+},300000);
+
+function checkData(callback){
+	console.log("Checking for data changes...")
+	getData(function(err,data){
+		if(err)
+		{
+			console.log(err);
+		}
+		if(DATA && (Object.keys(DATA).length == Object.keys(data).length))
+		{
+			for(site in data)
+			{
+				if(!deepEqual(data[site],DATA[site]))
+				{
+					console.log("change in data for site " + site);
+					io.emit("updatedData",site,data[site]);
+				}
+			}
+			DATA = data;
+		}
+		else
+		{
+			DATA = data;
+		}
+		console.log("done.")
+	});
+}
+
+//async function to collect and figure what data goes where using Today at the Park Data API and configuration JSON. Called by pages calling /data endpoint on load, and also by a setInterval to check for changes in all the data.
+function getData(callback) {
+	var data = '';
 	//first load up local configure file.
 	fs.readFile('data.json','utf-8',function(err,config){
 		if(err)
 		{
-			 res.send("Error - data.json config file does not exist." +  err)
+			 callback("Error - data.json config file does not exist." +  err,"")
 		}
 		else
 		{
@@ -63,7 +118,10 @@ app.get('/data', function(req, res){
 						//If local and API Json gets in correctly, we are here. now work on associating TAP API with sites defined in config file
 						for(site in data)//iterate through all the sites in config.
 						{
-
+							if(site == "default")
+							{
+								continue;
+							}
 							for(var i = 0; i < data[site].subSites.length; i++)//iterate through each subsite nested under main sites defined in config
 							{
 								for(var j = 0; j < apiJson.sites.length; j++)//for each site defined in data API...
@@ -94,16 +152,16 @@ app.get('/data', function(req, res){
 							}
 						}
 					}
-					res.send(data);
+					callback("",data);
 				});
 			}
 			catch(err)
 			{
-				res.send("Configuration error in data.json: " + err.message);
+				callback("Configuration error in data.json: " + err.message);
 			}
 		}
 	});
-});
+}
 
 
 //Handle Socket.io. This is where the magic happens with handling user interaction.
@@ -111,8 +169,8 @@ var clientID = 0;
 io.on('connection', function(socket){
 	var client = clientID++; //every connection increments a "client ID" this is for feedbacking to multiple ipads which one requested the video
 	socket.send(client);
-	socket.on('viewSite', function(submission){
-		io.emit('kioskViewSite',submission)
+	socket.on('viewSite', function(site){
+		io.emit('kioskViewSite',site)
 	});
 	socket.on('startVideo', function(id){
 		io.emit('kioskStartVideo',id)
@@ -123,9 +181,27 @@ io.on('connection', function(socket){
 	socket.on('timestamp', function(ts){
 		io.emit('timestamp',ts)
 	});
+	socket.on('setBackground', function(site, iter){
+		console.log("setting background to " + site + " array item " + iter);
+		io.emit('setBackground',site,iter)
+		backgroundDaydream = daydreamtimeout;
+	});
 
 });
 
+setInterval(function(){
+	backgroundDaydream--;
+	if(backgroundDaydream == 0)
+	{
+		var keys = Object.keys(DATA)
+		var key = keys[parseInt(Math.random()*keys.length)]
+		var background = parseInt(Math.random())*DATA[key].backgrounds.length
+		io.emit('setBackground',key,background)
+		backgroundDaydream = daydreamtimeout;
+	}
+},1000)
+
+checkData();
 http.listen(80, function(){
   console.log('listening on *:80');
 });

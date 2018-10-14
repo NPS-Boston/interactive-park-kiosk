@@ -8,9 +8,10 @@
 <link rel="apple-touch-icon" sizes="167x167" href="icons/167.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icons/180.png">
 <link rel="manifest" href="manifest.json">
-<link rel="preload" href="FYP_Boston_English_Online_Subtitles.mp4" as="video">
+<link rel="stylesheet" href="slick.css">
 <script src="/socket.io/socket.io.js"></script>
 <script src="jquery-3.2.1.min.js"></script>
+<script src="slick.min.js"></script>
 <style>
 html {
 	font-family:"Frutiger LT Std", Verdana, sans-serif;
@@ -112,6 +113,13 @@ left:0px;
 height:100%;
 width:100%;
 }
+.featureListing {
+position:absolute;
+top:1400px;
+left:0px;
+height:100%;
+width:100%;
+}
 #siteListingGlass {
 	z-index:1;
 	filter:blur(3px);
@@ -138,15 +146,37 @@ width:100%;
 .siteFullInfo.active {
 	left:0px;
 }
+.featureElement {
+	z-index:100;
+	position:fixed;
+	top:0px;
+	left:-1024px;
+	height:768px;
+	width:1024px;
+	overflow:scroll;
+	transition:left 1s;
+	background-color:black;
+	color:white;
+}
+
+.featureElement.active {
+	left:0px;
+}
+
+.viewFeatureImg {
+	width:960px;
+	margin-bottom:.75em;
+}
 
 .fullInfoHeader {
-	height:200px;
+	min-height:200px;
 	margin:20px 20px 0px 20px;
 }
 
 .fullInfoHeader img.thumb {
 	display:inline;
 	float:left;
+	margin-right:1em;
 }
 
 .fullInfoHeader h2::after {
@@ -160,6 +190,19 @@ width:100%;
     border-radius: 10px;
     font-weight: bold;
     box-shadow: 0px 0px 8px 4px black;
+}
+
+.featureElement .fullInfoHeader h2::after {
+    content: "\21D0 \00a0 \00a0 Back";
+    float: right;
+    font-family: sans-serif;
+    background: white;
+    color: black;
+    padding: 3px;
+    font-size: .75em;
+    border-radius: 10px;
+    font-weight: bold;
+    box-shadow: 0px 0px 8px 4px white;
 }
 
 .basicInfo {
@@ -191,6 +234,20 @@ ul.list li {
 	padding-bottom:.5em;
 }
 
+img.backgroundThumb {
+	height:100px;
+	border: 1px solid black;
+	opacity:.75;
+	display:inline-block;
+	margin:4px;
+}
+
+img.backgroundThumb.active {
+	opacity:1;
+	border: 3px solid black;
+	margin:1px;
+}
+
 .siteEvents {
 	width:650px;
 	box-sizing:border-box;
@@ -199,7 +256,33 @@ ul.list li {
 	border-left: 1px solid black;
 	float:right;
 	margin-right:20px;
+	padding-bottom:50px;
 }
+.backgroundSlick {
+	width:650px;
+	height:115px;
+	/*overflow-y:scroll;*/
+	box-sizing:border-box;
+	padding-left: 2%;
+	margin-left: 2%;
+	border-left: 1px solid black;
+	float:right;
+	margin-right:20px;
+}
+
+.featuresBackgroundSlick {
+    width: 960;
+    border-left: none;
+    float: none;
+    margin-left: 20px;
+	height:300px;
+}
+
+.featuresBackgroundSlick img.backgroundThumb {
+	height:260px;
+}
+
+
 
 .event_time {
 	float: right;
@@ -261,80 +344,18 @@ margin-top:300px;
 <div id="playVideo" style="width:1000px;height:300px;margin:10px;box-shadow:0px 0px 2px 4px #7d1d1d;"><img style="width:1000px;" src='FYP-Video-teaser.jpg'></div>
 <div class="siteListing" id='siteListingGlass'></div>
 <div class="siteListing" id='siteListingData'></div>
+<div class="featureListing" id='features'></div>
 <div class="captions fadeOut" id="english">
-   <p data-begin="00.500" data-end="02.600" region="r0" style="default">
-    Welcome to Boston!
-   </p>
-   <p data-begin="02.600" data-end="05.033" region="r1" style="default">
-    Where exploration is encouraged.
-   </p>
-   <p data-begin="05.033" data-end="06.466" region="r1" style="default">
-    A place where learning happens
-   </p>
-   <p data-begin="06.466" data-end="08.633" region="r1" style="default">
-    through experience and art.
-   </p>
-   <p data-begin="08.633" data-end="10.066" region="r0" style="default">
-    A place where freedom
-   </p>
-   <p data-begin="10.066" data-end="11.366" region="r2" style="default">
-    is remembered.
-   </p>
-   <p data-begin="11.366" data-end="12.700" region="r1" style="default">
-    Where you walk your way through
-   </p>
-   <p data-begin="12.700" data-end="14.700" region="r1" style="default">
-    history, and keep it relevant
-   </p>
-   <p data-begin="14.700" data-end="16.700" region="r1" style="default">
-    for the twenty-first century.
-   </p>
-   <p data-begin="16.700" data-end="18.933" region="r1" style="default">
-    This is a place we all share.
-   </p>
-   <p data-begin="18.933" data-end="20.766" region="r1" style="default">
-    In Boston, National Parks
-   </p>
-   <p data-begin="20.766" data-end="22.033" region="r2" style="default">
-    are everywhere.
-   </p>
-   <p data-begin="22.033" data-end="23.466" region="r1" style="default">
-    Here we learn about the past
-   </p>
-   <p data-begin="23.466" data-end="25.433" region="r1" style="default">
-    to create our future, together.
-   </p>
-   <p data-begin="25.433" data-end="27.533" region="r1" style="default">
-    Where leaders stand up to speak.
-   </p>
-   <p data-begin="27.533" data-end="29.066" region="r0" style="default">
-    Revolutions are formed.
-   </p>
-   <p data-begin="29.066" data-end="30.533" region="r0" style="default">
-    Knowledge is shared.
-   </p>
-   <p data-begin="30.533" data-end="31.900" region="r0" style="default">
-    And ships set sail.
-   </p>
-   <p data-begin="31.900" data-end="34.933" region="r1" style="default">
-    This is a place that unites us!
-   </p>
-   <p data-begin="37.866" data-end="39.933" region="r1" style="default">
-    National Parks are for everyone.
-   </p>
-   <p data-begin="39.933" data-end="41.766" region="r1" style="default">
-    So get up, get out there,
-   </p>
-   <p data-begin="41.766" data-end="43.933" region="r0" style="default">
-    and find your park!
-   </p>
+	<div style="position:relative;top:50%;transform:translateY(-50%);">
+    Video playing on main screen.
+	</div>
 </div>
 <script>
 //set up socket.io and globals
 var socket = io();
-var currentSite = 'AMH'
+var currentSite = 'AMH' //not needeD?
 var currentBG = 'a';
-var config = '';
+var config = ''; //global var holding json data from node service
 var COLUMNS = 3;
 var TILE_OFFSET = 340;
 var CLIENT_ID = '';
@@ -344,19 +365,41 @@ var touch_y = null;
 
 
 //SOCKET.IO LISTENERS
+//When video plays on big screen, only iPad/client who requested it (CLIENT_ID issued upon connection) should do anything.
 socket.on('kioskStartVideo', function(id){
 	if(id == CLIENT_ID)
-		showPlayer();
+		showPlayer(); //In this case, just show a reminder the video is up, not down.
 });
 socket.on('videoEnd', function(id){
 hidePlayer();
+});
+
+//server regularly checks for new data on JSON and in data feed. Handle new updates.
+socket.on('updatedData', function(site,data){
+	config[site] = data;
+	$("#" + site).html(generateSiteDetail(site));
+	$(".backgroundSlick").slick({
+	  infinite: true,
+	  slidesToShow: 3,
+	  slidesToScroll: 3
+	});
+	$(".featuresBackgroundSlick").slick({
+	  infinite: true,
+	  slidesToShow: 2,
+	  slidesToScroll: 2
+	});
 });
 
 socket.on("message",function(msg){
 	CLIENT_ID = msg;
 	console.log(CLIENT_ID);
 });
+
+
+//Handle video playing timestamps to draw captions/information/etc.
+/*
 socket.on("timestamp",function(seconds){
+	var hit = false;
 	$(".captions p").each(function(index, element){
 		var start = $(element).data("begin");
 		var end = $(element).data("end");
@@ -364,18 +407,21 @@ socket.on("timestamp",function(seconds){
 		if((seconds >start) && (seconds < end))
 		{
 			$(element).addClass("highlightedText");
+			hit = true;
 		}
 		else
 		{
 			$(element).removeClass("highlightedText")
 		}
 	});
+	if(hit == false)
+		hidePlayer();
 });
-
+*/
 //EVENT LISTENERS
-
-$(".captions").on("click",function(e){
-	hidePlayer();
+var idleTimer = 120; //seconds
+$(document).on('scroll select change click touchstart',function(){
+	idleTimer = 120;
 });
 
 $(document).ready(function() {
@@ -385,7 +431,19 @@ $(document).ready(function() {
 	});
 	$("#playVideo").on("click",function () {
 		socket.emit("startVideo",CLIENT_ID);
+		showPlayer();
+		setTimeout(function(){hidePlayer()},5000);
+		
 	});
+	setInterval(function(){
+		idleTimer--;
+		if(idleTimer == 0)
+		{
+			$(".active").removeClass("active");
+			idleTimer = 120;
+			window.scrollTo(0,0)
+		}
+		},1000)
 });
 
 //MAIN FUNCTIONALITY
@@ -407,6 +465,31 @@ function procData(config)
 		{
 			$("#imageLoadingPen").append("<img src='" + config[site].backgrounds[bg].url + "'>")
 		}
+		if(site == "default")
+		{
+			//in default object are default/general backgrounds, as well as "features"
+			for(feature in config[site].features)
+			{
+				for(bg in config[site].features[feature].backgrounds)
+				{
+					$("#imageLoadingPen").append("<img src='" + config[site].features[feature].backgrounds[bg].url + "'>")
+				}
+				var left = TILE_OFFSET * (x%COLUMNS);
+				var top = TILE_OFFSET * Math.floor(x/COLUMNS);
+				$("#features").append("<div class='siteItem siteItemGlass' style='background:url(&quot;" + config[site].features[feature].backgrounds[0].url + "&quot;);top:" + top + "px;left:" + left + "px;' class='" + feature + "'>")
+				var item = ""
+				item += "<div class='siteItem siteItemData " + feature + "' onclick='socket.emit(&quot;viewFeature&quot;,&quot;" + feature + "&quot;);viewFeature(&quot;" + feature + "&quot;)' style=top:" + top + "px;left:" + left + "px;'>"	//primary feature abbr is ID
+					item += "<div class='siteHeader'>";
+						//item += "<img class='thumb' src='icons/" + config[site].icon + "'>";//primary site icon/thumbnail
+						item += "<h2>Featured content:<br>" + config[site].features[feature].name + "</h2>";//primary site name
+					item += "</div>";
+				item += "</div>";
+				$("#features").append(item);
+				$("body").append("<div class='siteFullInfo feature' id='" + feature + "'></div>");
+				$("#" + feature).html(generateFeature(feature));
+			}
+			continue;
+		}
 		var left = TILE_OFFSET * (x%COLUMNS);
 		var top = TILE_OFFSET * Math.floor(x/COLUMNS);
 		$("#siteListingGlass").append("<div class='siteItem siteItemGlass' style='background:url(&quot;" + config[site].backgrounds[0].url + "&quot;);top:" + top + "px;left:" + left + "px;' class='" + site + "'>")
@@ -421,109 +504,12 @@ function procData(config)
 		
 		
 		//now build site detail panes
-		item = '';
-			item += "<div class='siteFullInfo' id='" + site + "'>"
-				item += "<div class='fullInfoHeader'>";
-					item += "<img class='thumb' src='icons/" + config[site].icon + "'>";//primary site icon/thumbnail
-					item += "<h2 onclick='$(&quot;.active&quot;).removeClass(&quot;active&quot;);'>" + config[site].name + "</h2>";//primary site name
-					item += config[site].detail;
-				item += "</div>";
-				item += "<div class='basicInfo'>"
-					if(config[site].subSites.length == 1)
-					{
-						item += "<h3 class='siteSubHeader'>" + config[site].subSites[0].data.hours + "</h3>"
-					}
-					item += "<span class='basicInfoItem'>"
-						item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/hours.png'>"
-						item += "<ul class='list'>"
-							
-							item += "<li>Most visitors spend about " + config[site].visiting_time + " minutes";
-							if(config[site].events.length > 0)
-							{
-								if(config[site].events.length == 1)
-								{
-									item += " and there is 1 event/activity today.</li>"
-								}
-								else
-								{
-									item += " and there are " + config[site].events.length + " events and activites today.</li>"
-								}
-							}
-							else
-							{
-								item += ".</li>";
-							}
-						item +="</ul>"
-					item += "</span>"
-					item += "<span class='basicInfoItem'>"
-							item += "<img style='vertical-align: middle;' src='walking-black.png'>"
-							item += "<ul class='list'>"
-								item += "<li>" + config[site].walking_time + "";
-							item +="</ul>"
-						item += "</span>"
-					for(var i = 0; i < config[site].subSites.length; i++)
-					{
-						if(config[site].subSites.length > 1)
-						{
-							item += "<h3 class='siteSubHeader'>";
-							item += config[site].subSites[i].name + ": <br>" + config[site].subSites[i].data.hours;
-							item += "</h3>"
-						}
-						item += "<span class='basicInfoItem'>";
-						//full fee description.
-							if(config[site].subSites[i].data.fees_required == "true")
-							{
-								item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/fee.png'>"
-							}
-							else
-							{
-								item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/non-fee.png'>"
-							}
-							item += "<ul class='list'>"
-								for(var fee in config[site].subSites[i].data.fees)
-								{
-									item += "<li>" + config[site].subSites[i].data.fees[fee] + "</li>"
-								}
-							item += "</ul>"
-						item += "</span>";
-						//accessibility full description
-						item += "<span class='basicInfoItem'>";
-						if(config[site].subSites[i].data.accessibility[0].accessible == "true")
-						{
-							item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/accessible.png'>"
-						}
-						else
-						{
-							item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/not-accessible.png'>"
-						}
-						item += "<ul class='list'>"
-							for(var access in config[site].subSites[i].data.accessibility)
-							{
-								item += "<li>" + config[site].subSites[i].data.accessibility[access].consideration + "</li>"
-							}
-							item += "</ul>"
-						item += "</span>";
-					}
-				item += "</div>"
-				item += "<div class='siteEvents'>"
-					item += "<h3 style='margin-bottom:0px;'><img style='vertical-align: middle;' src='event-black.png'> Events and Activites: </h3>"
-					for(event in config[site].events)
-					{
-						item += "<span class='event_data'>";
-						item += "<h3 class='event_title'>" + config[site].events[event].title + "</h3>"
-						//item += "<span class='event_location'>" + events[event].location + "</span>"
-						item += "<span class='event_time'>" + config[site].events[event].formattedStartTime + config[site].events[event].formattedEndTime + "</span>"
-						item += "<span class='event_description'>" + config[site].events[event].content + "</span>"
-						item += "</span>"
-					}
-				item += "</div>"
-			item += "</div>"
-		item += "</div>"
-		$("body").append(item)
+		$("body").append("<div class='siteFullInfo' id='" + site + "'></div>")
+		$("#" + site).html(generateSiteDetail(site));
 		x++;
 	}
-	
 	//add touch listeners to each "full info" card THX to user "givanse" on stackoverflow.com for the basic simple code.
+	/*
 	$(".siteFullInfo").on("touchstart",function(e){
 		touch_x = e.touches[0].clientX;
 		touch_y = e.touches[0].clientY;
@@ -547,21 +533,201 @@ function procData(config)
 			}
 			else
 			{
-				/* right swipe */
+				// right swipe
 			}                       
 		}
 		else
 		{
 			if ( yDiff > 0 ) {
-				/* up swipe */ 
+				// up swipe
 			} else { 
-				/* down swipe */
+				// down swipe 
 			}                                                                 
 		}
-		/* reset values */
+		// reset values
 		touch_x = null;
 		touch_y = null; 
-	});
+	});*/
+	$(".backgroundSlick").slick({
+  infinite: true,
+  slidesToShow: 3,
+  slidesToScroll: 3
+});
+$(".featuresBackgroundSlick").slick({
+  infinite: true,
+  slidesToShow: 2,
+  slidesToScroll: 2
+});
+}
+
+function generateFeature(feature)
+{
+	var item = '';
+	//fullInfoHeader contains title and descriptive material.
+		item += "<div class='fullInfoHeader'>";
+				item += "<h2 onclick='$(&quot;.active&quot;).removeClass(&quot;active&quot;);'>" + config["default"].features[feature].name + "</h2>";//primary site name
+				item += config["default"].features[feature].description;
+			item += "</div>";
+	//for(var x = 0; x < feature.backgrounds.length; x++)
+//	{
+	/*
+		var left = TILE_OFFSET * (x%COLUMNS);
+		var top = TILE_OFFSET * Math.floor(x/COLUMNS);
+		item += "<div class='siteItem siteItemGlass' style='background:url(&quot;" + feature.backgrounds[x].url + "&quot;);top:" + top + "px;left:" + left + "px;' class='" + feature.backgrounds[x].caption + "'>"
+		item += "<div class='siteItem siteItemData " + feature.backgrounds[x].caption + "' onclick='socket.emit(&quot;viewFeature&quot;,&quot;" + feature + "&quot;);viewFeature(&quot;" + feature + "&quot;)' style=top:" + top + "px;left:" + left + "px;'>"	//primary site abbr is ID
+			item += "<div class='siteHeader'>";
+				//item += "<img class='thumb' src='icons/" + config[site].icon + "'>";//primary site icon/thumbnail
+				item += "<h2>" + feature.backgrounds[x].caption + "</h2>";//primary site name
+			item += "</div>";
+		item += "</div>";
+		*/
+		item += "<div class='featuresBackgroundSlick'>"
+		for(var bg = 0; bg < config["default"].features[feature].backgrounds.length; bg++)
+		{
+			item += "<div style='width:200px;'><img onclick='socket.emit(&quot;setBackground&quot;,&quot;" + feature + "&quot;," + bg +");viewFeatureElement(&quot;" + feature + "_element_" + bg + "&quot;)' class='backgroundThumb' src='" + config["default"].features[feature].backgrounds[bg].url + "'></div>";
+			$("body").append("<div class='featureElement' id='" + feature + "_element_" + bg + "'></div>")
+			$("#" + feature + "_element_" + bg).html(generateFeatureElement(config["default"].features[feature].backgrounds[bg]));
+		}
+		item += "</div>";
+	//}
+	return item;
+}
+
+function generateFeatureElement(obj)
+{
+	var item = '';
+	//fullInfoHeader contains title and descriptive material.
+		item += "<div class='fullInfoHeader'>";
+				item += "<h2 onclick='$(&quot;.featureElement.active&quot;).removeClass(&quot;active&quot;);'>" + obj.caption + "</h2>";//primary site name
+				item += "<img class='viewFeatureImg' src='" + obj.url +"'>"
+				item += obj.description;
+			item += "</div>";
+	return item;
+}
+
+
+function generateSiteDetail(site)
+{
+	item = '';
+		//fullInfoHeader contains title and descriptive material.
+			item += "<div class='fullInfoHeader'>";
+				item += "<img class='thumb' src='icons/" + config[site].icon + "'>";//primary site icon/thumbnail
+				item += "<h2 onclick='$(&quot;.active&quot;).removeClass(&quot;active&quot;);'>" + config[site].name + "</h2>";//primary site name
+				item += config[site].detail;
+			item += "</div>";
+		//next is basic info, floats to the left and is about a third of viewport.
+			item += "<div class='basicInfo'>"
+				if(config[site].subSites.length == 1)
+				{
+					item += "<h3 class='siteSubHeader'>" + config[site].subSites[0].data.hours + "</h3>"
+				}
+				item += "<span class='basicInfoItem'>"
+					item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/hours.png'>"
+					item += "<ul class='list'>"
+						
+						item += "<li>Most visitors spend about " + config[site].visiting_time + " minutes";
+						if(config[site].events.length > 0)
+						{
+							if(config[site].events.length == 1)
+							{
+								item += " and there is 1 event/activity today.</li>"
+							}
+							else
+							{
+								item += " and there are " + config[site].events.length + " events and activites today.</li>"
+							}
+						}
+						else
+						{
+							item += ".</li>";
+						}
+					item +="</ul>"
+				item += "</span>"
+				item += "<span class='basicInfoItem'>"
+						item += "<img style='vertical-align: middle;' src='walking-black.png'>"
+						item += "<ul class='list'>"
+							item += "<li>" + config[site].walking_time + "";
+						item +="</ul>"
+					item += "</span>"
+				for(var i = 0; i < config[site].subSites.length; i++)
+				{
+					if(config[site].subSites.length > 1)
+					{
+						item += "<h3 class='siteSubHeader'>";
+						item += config[site].subSites[i].name + ": <br>" + config[site].subSites[i].data.hours;
+						item += "</h3>"
+					}
+					item += "<span class='basicInfoItem'>";
+					//full fee description.
+						if(config[site].subSites[i].data.fees_required == "true")
+						{
+							item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/fee.png'>"
+						}
+						else
+						{
+							item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/non-fee.png'>"
+						}
+						item += "<ul class='list'>"
+							for(var fee in config[site].subSites[i].data.fees)
+							{
+								item += "<li>" + config[site].subSites[i].data.fees[fee] + "</li>"
+							}
+						item += "</ul>"
+					item += "</span>";
+					//accessibility full description
+					item += "<span class='basicInfoItem'>";
+					if(config[site].subSites[i].data.accessibility[0].accessible == "true")
+					{
+						item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/accessible.png'>"
+					}
+					else
+					{
+						item += "<img style='vertical-align: middle;' src='https://www.nps.gov/bost/planyourvisit/images/not-accessible.png'>"
+					}
+					item += "<ul class='list'>"
+						for(var access in config[site].subSites[i].data.accessibility)
+						{
+							item += "<li>" + config[site].subSites[i].data.accessibility[access].consideration + "</li>"
+						}
+						item += "</ul>"
+					item += "</span>";
+				}
+			item += "</div>"
+		//To the right of the basic info pane, is a background selector and then events listings.
+			if(config[site].backgrounds.length > 0)
+			{
+				/*
+				item += "<div class='backgroundSelector'><div style='width:" + config[site].backgrounds.length * 200 + "px;'>"
+				for(var bg = 0; bg < config[site].backgrounds.length; bg++)
+				{
+					item += "<img onclick='socket.emit(&quot;setBackground&quot;,&quot;" + site + "&quot;," + bg +");' class='backgroundThumb' src='" + config[site].backgrounds[bg].url + "'>";
+				}
+				item += "</div></div>";
+				*/
+				item += "<div class='backgroundSlick'>"
+				for(var bg = 0; bg < config[site].backgrounds.length; bg++)
+				{
+					item += "<div style='width:200px;'><img onclick='socket.emit(&quot;setBackground&quot;,&quot;" + site + "&quot;," + bg +");' class='backgroundThumb' src='" + config[site].backgrounds[bg].url + "'></div>";
+				}
+				item += "</div>";
+			}
+			if(config[site].events.length > 0)
+			{
+				item += "<div class='siteEvents'>"
+					item += "<h3 style='margin-bottom:0px;'><img style='vertical-align: middle;' src='event-black.png'> Events and Activites: </h3>"
+					for(event in config[site].events)
+					{
+						item += "<span class='event_data'>";
+						item += "<h3 class='event_title'>" + config[site].events[event].title + "</h3>"
+						//item += "<span class='event_location'>" + events[event].location + "</span>"
+						item += "<span class='event_time'>" + config[site].events[event].formattedStartTime + config[site].events[event].formattedEndTime + "</span>"
+						item += "<span class='event_description'>" + config[site].events[event].content + "</span>"
+						item += "</span>"
+					}
+				item += "</div>"
+			}
+		item += "</div>"
+	return item;
 }
 
 function viewSite(site){
@@ -577,6 +743,25 @@ function viewSite(site){
 			$('#mainBackground_' + currentBG).addClass('active');
 			//$("#" + site + " .sitePreview").addClass('active');
 	//	},1000);
+
+}
+function viewFeature(feature){
+	if(currentBG === 'a') currentBG = 'b';
+	else currentBG = 'a';
+	$('.background.' + currentBG).css("background-image","url('" + config['default'].features[feature].backgrounds[0].url + "')");
+	$(".active").removeClass('active');
+	//setTimeout(function(){
+			//$("#siteTitle").html(config[site].caption)
+			//$("#siteTitle").addClass('titleIn');
+			//$("#leftPanelContent").animate({top:-$("#" + site)[0].offsetTop})
+			$("#" + feature).addClass('active');
+			$('#mainBackground_' + currentBG).addClass('active');
+			//$("#" + site + " .sitePreview").addClass('active');
+	//	},1000);
+
+}
+function viewFeatureElement(id){
+			$("#" + id).addClass('active');
 
 }
 </script>

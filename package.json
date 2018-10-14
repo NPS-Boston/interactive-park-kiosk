@@ -17,8 +17,11 @@
   },
   "homepage": "https://github.com/nps-boston/big_board#readme",
   "dependencies": {
+    "deep-equal": "^1.0.1",
     "express": "^4.16.2",
     "get-json": "^1.0.0",
+    "mustache": "^2.3.0",
+    "slick-carousel": "^1.8.1",
     "socket.io": "^2.0.4"
   }
 }

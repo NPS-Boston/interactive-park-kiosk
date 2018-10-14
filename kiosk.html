@@ -4,6 +4,7 @@
 <style>
 html {
 	font-family:"Frutiger LT Std", Verdana, sans-serif;
+	cursor:none;
 }
 body {
 	width:100%;
@@ -20,7 +21,6 @@ body {
 	top:0px;
 	left:0px;
 	transition: opacity 2s;
-	cursor:none;
 	background-color:black;
 }
 .fadeOut {
@@ -85,6 +85,11 @@ body {
 	max-height:300px;
 	max-width:300px;
 }
+
+.siteItem.active .thumb {
+	float:initial;
+}
+
 .siteItem span {
 	display:inline-block;
 }
@@ -95,6 +100,7 @@ body {
 
 .siteItem.active h2 {
 	font-size: 3em;
+	display:inline-block;
 }
 
 .sitePreview {
@@ -124,6 +130,9 @@ body {
 	display:inline-block;
 }
 
+ul {
+	max-width:85%;
+}
 ul.list {
 	display: inline-block;
     list-style: none;
@@ -170,8 +179,8 @@ ul.list li {
 }
 
 .event_data {
-display:block;
-margin-top:.75em;
+	display:block;
+	margin-top:.75em;
 }
 .event_title {
 	margin-top:0em;
@@ -244,9 +253,13 @@ h3 {
     background: white;
     letter-spacing: 1px;
 }
+
+.subSiteHours {
+	margin-bottom:.5em;
+}
 .subSiteHoursLabel {
 	font-style:normal;
-	margin-right:3em;
+	margin-right:.5em;
 	display:inline-block;
 }
 
@@ -258,7 +271,30 @@ h3.siteSubHeader {
 	padding: 0;
 
 }
+.captions {
+    position: fixed;
+    bottom: 0px;
+    height: 6em;
+    width: 1110px;
+    margin-left:1110px;
+    margin-right:1110px;
+    background: #000000cc;
+    text-align: center;
+    color: white;
+    font-size: 3em;
+	transition: opacity .5s;
+	z-index:101;
+}
 
+.captions p {
+display:none;
+margin-top:2em;
+z-index:102;
+}
+
+.highlightedText {
+	display:block !important;
+}
 
 </style>
 </head>
@@ -274,8 +310,77 @@ h3.siteSubHeader {
 <div id='' class='background'></div>
 	<div id='infoPanel'></div>
 <video id='video' src='FYP_Boston_English_Online.mp4'></video>
+<div class="captions fadeOut" id="english">
+   <p data-begin="00.500" data-end="02.600" region="r0" style="default">
+    Welcome to Boston!
+   </p>
+   <p data-begin="02.600" data-end="05.033" region="r1" style="default">
+    Where exploration is encouraged.
+   </p>
+   <p data-begin="05.033" data-end="06.466" region="r1" style="default">
+    A place where learning happens
+   </p>
+   <p data-begin="06.466" data-end="08.633" region="r1" style="default">
+    through experience and art.
+   </p>
+   <p data-begin="08.633" data-end="10.066" region="r0" style="default">
+    A place where freedom
+   </p>
+   <p data-begin="10.066" data-end="11.366" region="r2" style="default">
+    is remembered.
+   </p>
+   <p data-begin="11.366" data-end="12.700" region="r1" style="default">
+    Where you walk your way through
+   </p>
+   <p data-begin="12.700" data-end="14.700" region="r1" style="default">
+    history, and keep it relevant
+   </p>
+   <p data-begin="14.700" data-end="16.700" region="r1" style="default">
+    for the twenty-first century.
+   </p>
+   <p data-begin="16.700" data-end="18.933" region="r1" style="default">
+    This is a place we all share.
+   </p>
+   <p data-begin="18.933" data-end="20.766" region="r1" style="default">
+    In Boston, National Parks
+   </p>
+   <p data-begin="20.766" data-end="22.033" region="r2" style="default">
+    are everywhere.
+   </p>
+   <p data-begin="22.033" data-end="23.466" region="r1" style="default">
+    Here we learn about the past
+   </p>
+   <p data-begin="23.466" data-end="25.433" region="r1" style="default">
+    to create our future, together.
+   </p>
+   <p data-begin="25.433" data-end="27.533" region="r1" style="default">
+    Where leaders stand up to speak.
+   </p>
+   <p data-begin="27.533" data-end="29.066" region="r0" style="default">
+    Revolutions are formed.
+   </p>
+   <p data-begin="29.066" data-end="30.533" region="r0" style="default">
+    Knowledge is shared.
+   </p>
+   <p data-begin="30.533" data-end="31.900" region="r0" style="default">
+    And ships set sail.
+   </p>
+   <p data-begin="31.900" data-end="34.933" region="r1" style="default">
+    This is a place that unites us!
+   </p>
+   <p data-begin="37.866" data-end="39.933" region="r1" style="default">
+    National Parks are for everyone.
+   </p>
+   <p data-begin="39.933" data-end="41.766" region="r1" style="default">
+    So get up, get out there,
+   </p>
+   <p data-begin="41.766" data-end="43.933" region="r0" style="default">
+    and find your park!
+   </p>
+</div>
 <script>
-var currentSite = 'AMH'
+var currentSite = 'none';
+var currentBGIter = 0;
 var currentBG = 'a';
 var config = '';
 var CLIENT_ID = '';
@@ -295,7 +400,21 @@ $("#video").on("click",function(e){
 
 //this emits constantly while video is playing. clients with the player open use this data to handle caption data.
 $("#video").on("timeupdate",function(e){
-	socket.emit("timestamp",e.target.currentTime)
+	var seconds = e.target.currentTime;
+	socket.emit("timestamp",seconds);
+	$(".captions p").each(function(index, element){
+		var start = $(element).data("begin");
+		var end = $(element).data("end");
+		//console.log(start +" "+ seconds +" "+ end)
+		if((seconds >start) && (seconds < end))
+		{
+			$(element).addClass("highlightedText");
+		}
+		else
+		{
+			$(element).removeClass("highlightedText")
+		}
+	});
 });
 
 //------------------------
@@ -306,11 +425,13 @@ function hidePlayer(){
 	socket.emit("videoEnd","");
 	document.getElementById("video").pause();
 	document.getElementById("video").className = 'fadeOut';
+	document.getElementById("english").className = 'captions fadeOut';
 }
 function showPlayer(){
 	document.getElementById("video").currentTime = 0;
 	document.getElementById("video").className = 'fadeIn';
 	document.getElementById("video").play();
+	document.getElementById("english").className = 'captions fadeIn';
 }
 
 
@@ -329,8 +450,15 @@ socket.on('kioskViewSite', function(site){
 
 //handle when a client touches a video icon
 socket.on('kioskStartVideo', function(){
-	showPlayer();
+	if(document.getElementById("video").paused)
+		showPlayer();
 });
+
+socket.on("setBackground", function(site,iter){
+	setBackground(site,iter);
+});
+
+
 //call up data from server
 $(document).ready(function() {
 	hidePlayer();
@@ -344,6 +472,7 @@ $(document).ready(function() {
 function procData(config){
 	for(site in config)//iterate through all the sites in config.
 	{	
+		console.log(site)
 		//first preload backgrounds into imageLoadingPen
 		for(bg in config[site].backgrounds)
 		{
@@ -351,6 +480,11 @@ function procData(config){
 		}
 
 		//now build html based off config and the nested API feed data that has been properly filtered out under subSiteData and events
+		//if "default" key-value. SKIP. there is no html to render.
+		if(site == "default")
+		{
+			continue;
+		}
 		var item = ""
 		item += "<div class='siteItem' id='" + site + "'>"	//primary site abbr is ID
 			item += "<div class='siteHeader'><img class='thumb' src='icons/" + config[site].icon + "'>";//primary site icon/thumbnail
@@ -524,29 +658,64 @@ function procData(config){
 	}
 }
 function viewSite(site) {
-	currentSite = site;
-	//$("#leftPanelContent").animate({top:0})
-	setBackground(site,0)
-	$(".active").removeClass('active');
-	setTimeout(function(){
-			$("#siteTitle").html(config[site].caption)
-			$("#siteTitle").addClass('titleIn');
-			$("#leftPanelContent").animate({top:-$("#" + site)[0].offsetTop})
-			$("#" + site).addClass('active');
-			$("#" + site + " .sitePreview").addClass('active');
-		},1000);
-			
-	//},250);
-	
+	if(currentSite == site)
+	{
+		return;
+	}
+	else
+	{
+		currentSite = site;
+		currentBGIter = 0
+		setBackground(site,0,true);
+		$(".active").removeClass('active');
+		if(currentSite != "default")
+		{
+			setTimeout(function(){
+					$("#siteTitle").html(config[site].caption)
+					$("#siteTitle").addClass('titleIn');
+					$("#leftPanelContent").animate({top:-$("#" + site)[0].offsetTop})
+					$("#" + site).addClass('active');
+					$("#" + site + " .sitePreview").addClass('active');
+				},1000);
+		}		
+	}
 }
 
-function setBackground(site,iter) {
-	$(".background." + currentBG).removeClass('fadeIn').addClass('fadeOut');
-	if(currentBG === 'a') currentBG = 'b';
-	else currentBG = 'a';
-	$('.background.' + currentBG).css("background-image","url('" + config[site].backgrounds[iter].url + "')");
-	$('#mainBackground_' + currentBG + ' .siteTitle').html(config[site].backgrounds[iter].caption);
-	$(".background." + currentBG).removeClass('fadeOut').addClass('fadeIn');
+function setBackground(site,iter,force) {
+	if(force == "undefined")
+	{
+		force = false;
+	}
+	if(currentSite == site && currentBGIter == iter && !force) //if already the same, unless forced (i.e. an explicit order has been given from viewSite.)
+	{
+		return;
+	}
+	else
+	{
+		var bgObj = ''
+		if(site in config)
+		{
+			bgObj = config[site].backgrounds[iter]
+		}
+		else
+		{
+			if(site in config.default.features)
+			{
+				bgObj = config.default.features[site].backgrounds[iter]
+			}
+			else
+			{
+				bgObj = config.default.backgrounds[0];//default is the first default bg in data.json
+			}
+		}
+		$(".background." + currentBG).removeClass('fadeIn').addClass('fadeOut');
+		if(currentBG === 'a') currentBG = 'b';
+		else currentBG = 'a';
+		$('.background.' + currentBG).css("background-image","url('" + bgObj.url + "')");
+		$('#mainBackground_' + currentBG + ' .siteTitle').html(bgObj.caption);
+		$(".background." + currentBG).removeClass('fadeOut').addClass('fadeIn');
+		currentBGIter = iter;
+	}
 }
 </script>
 </body>

@@ -1,4 +1,36 @@
 {
+"default":{
+	"backgrounds":[
+		{"url":"IMG_2312.jpg","caption":"The Freedom Trail"}
+	],
+	"features":{
+		"Maps":{
+			"name":"Maps and Views of Boston, 1760s to Now.",
+			"description":"Since English settlement in the early 1600s, Boston's growth has been directly related to the sea and a changing shoreline and an always transforming skyline. Explore maps and panoramas of Boston across over time and compare with how Boston looks today.",
+			"backgrounds":[
+				{
+				"url":"view_of_Boston_1768.jpg",
+				"caption":"A View of Boston, 1768",
+				"description":"Paul Revere produced this engraving in 1768 as a political statement. Landing at long wharf are the British Army soldiers, coming to maintain order after particularly bad instances of rioting and violence against the Crown's customs officials in the Summer of 1768. The only ships actually out in the harbor are warships of the Royal Navy. Opposite this militaristic scene is a town with massive steeples stretching up into the sky. Overall, the depicted extent of is quite accurate. The depiction is very useful for gaining a feel for just how packed in this town of some 15,000 people. However the embellishment of the steeples underscore this is a good holy town. Why, the viewer might ask, would a good holy town need such an armed presence?"
+				},
+				{
+				"url":"price-1769.jpg",
+				"caption":"Boston, 1769",
+				"description":"This map of Boston was published by William Price in 1769. It is one of the most detailed maps of Boston that survive from the Revolutionary period. This map not only labels all the roads in town, but it also illustrates and notes all the churches, significant buildings, and wharves in Boston. The map is an update from one made by a John Bonner in 1722. Price simply took Bonner's 1722 map and added all the major buildings built since the last printing, such as Christ Church (Old North, built 1723) and Faneuil Hall (built 1742). Price also updated other vital statistics about the colonial town, such as the more recent Small Pox epidemics and the Great Fires that had occurred."
+				},
+				{"url":"harbor_1775.jpg",
+				"caption":"Boston Harbor, 1775",
+				"description":"The second British military occupation of Boston began in the Summer of 1774. This was in response to the destruction of East India Tea in December 1773 - Later known as the &quot;Boston Tea Party&quot;. By the Spring of the next year in 1775, Boston was not just a garrison town, but a besieged town. British military engineers were sent out into Boston Harbor to survey the environment that now proved to be their new battlefield. Needing to know the depth of the harbor and rivers was critical in ensuring that the Royal Navy could support ground troops without running aground and falling victim to dramatic tidal changes."
+				},
+				{
+				"url":"Boston-bird-eye-1872.jpg",
+				"caption":"The City of Boston, ca. 1872",
+				"description":"Fast forward 100 years after the Siege of Boston and the Revolutionary War, we see a dramatically different Boston. Still a major port city, Boston was now a major industrial town as well. Physically, Boston now covered a larger landmass. South Boston had been filled and settled. The Back Bay - a swampy backwater beyond Boston Common - was now being filled and developed. One of the biggest industrial features on the landscape is to the center-right: The Charlestown Navy Yard. Just uphill is the Bunker Hill Monument. Now just part of the modern skyline, the Monument was the tallest feature for miles around. Only the smokestacks of factories rivaled the monument's height."
+				}
+			]
+		}
+	}
+},
 "AMH":{
 	"name":"Museum of African American History &amp; The African Meeting House",
 	"subSites":[{"abbr":"AMH","name":""}],
@@ -77,7 +109,7 @@
 	"walking_time":"About 20 minutes via Freedom Trail."
 	},
 "BH":{
-	"name":"Bunker Hill Monument &amp; Museum",
+	"name":"Bunker Hill",
 	"subSites":[{"abbr":"BH","name":"Monument"},{"abbr":"BHM","name":"Museum"}],
 	"icon":"BH.svg",
 	"backgrounds":[
